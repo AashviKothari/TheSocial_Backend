@@ -53,7 +53,7 @@ router.post("/login", async (req,res)=>{
 
         res.status(200).json(user)
     } catch(err) {
-        console.log(err)
+        res.status(500).json(err)
     }
 })
 
