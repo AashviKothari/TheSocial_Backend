@@ -43,6 +43,35 @@ router.delete("/:id", async(req,res)=>{
       res.status(500).json(err)
   }
   })
+
+  //like a post
+
+  router.put("/:id/like", async(req,res)=>{
+      try{
+        const post = await Post.findById(req.params.id);
+        if(!post.likes.includes(req.body.userId)){
+            await post.updateOne({$push:{likes: req.body.userId}});
+            res.status(200).json("Liked Post")
+        }else{
+            await post.updateOne({$pull:{likes: req.body.userId}});
+            res.status(200).json("dis-Liked Post")
+        }
+      }catch(err){
+        res.status(500).json(err)
+      }
+  });
+
+  //get a post
+
+  router.get("/:id", async(req,res)=>{
+    try{
+        const post = await Post.findById(req.params.id);
+        // const {password, updatedAt, ...other} = user._doc
+        res.status(200).json(post)
+    }catch(err){
+        res.status(500).json(err)
+    }
+})
   
 
 module.exports = router;
